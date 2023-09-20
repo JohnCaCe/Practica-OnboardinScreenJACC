@@ -1,3 +1,4 @@
+import 'package:app1flutter/assets/global_values.dart';
 import 'package:app1flutter/assets/styles_app.dart';
 import 'package:app1flutter/card_school.dart';
 import 'package:app1flutter/routes.dart';
@@ -13,12 +14,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Home(),
-      //home: const LoginScreen(),
-      routes: getRoutes(),
-      theme: StylesApp.darkTheme(context),
-    );
+    return ValueListenableBuilder(
+        valueListenable: GlobalValues.flagTheme,
+        builder: (context, value, _) {
+          return MaterialApp(
+              //home: Home(),
+              home: const LoginScreen(),
+              routes: getRoutes(),
+              theme: GlobalValues.flagTheme.value
+                  ? StylesApp.darkTheme(context)
+                  : StylesApp.lightTheme(context));
+        });
   }
 }
 
@@ -42,7 +48,7 @@ class Home extends StatelessWidget {
         image: const AssetImage("assets/carrera.jpg"),
         backgroundColor: const Color.fromARGB(255, 8, 98, 224),
         titleColor: const Color.fromARGB(255, 52, 206, 237),
-        subtitleColor: Color.fromARGB(255, 106, 255, 32),
+        subtitleColor: const Color.fromARGB(255, 106, 255, 32),
         background: LottieBuilder.asset("assets/animations/animation2.json")),
     CardSchoolData(
         title: "Instalaciones",
@@ -66,6 +72,5 @@ class Home extends StatelessWidget {
         },
       ),
     );
-    ;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,20 +9,34 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool? recordarButton = false;
+  SharedPreferences? _pref;
+
+  @override
+  void initState() {
+    cargarPreferencias();
+    super.initState();
+  }
+
+  cargarPreferencias() async {
+    _pref = await SharedPreferences.getInstance();
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController txtConUser = TextEditingController();
     TextEditingController txtConPass = TextEditingController();
-    final txtUser = TextField(
-        controller: txtConUser,
-        decoration: const InputDecoration(
+
+    const txtUser = TextField(
+        //controller: txtConUser,
+        decoration: InputDecoration(
             border: OutlineInputBorder() //PONER BORDES A LAS CAJAS DE TEXTO
             ));
 
-    final txtPass = TextField(
-        controller: txtConPass,
+    const txtPass = TextField(
+        //controller: txtConPass,
         obscureText: true,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
             border: OutlineInputBorder() //PONER BORDES A LAS CAJAS DE TEXTO
             ));
 
@@ -34,14 +49,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     final btnEntrar = FloatingActionButton.extended(
-      icon: const Icon(Icons.login),
-      label: const Text('Entrar'),
-      onPressed: () {
-        Navigator.pushNamed(context, '/dash');
-      },
-    );
-
-    final btnOnBoard = FloatingActionButton.extended(
       icon: const Icon(Icons.login),
       label: const Text('Entrar'),
       onPressed: () {
@@ -64,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
             alignment: Alignment.bottomCenter,
             children: [
               Container(
-                height: 200,
+                height: 249,
                 padding: const EdgeInsets.all(30),
                 margin: const EdgeInsets.symmetric(horizontal: 30),
                 decoration: BoxDecoration(
@@ -76,7 +83,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    txtPass
+                    txtPass,
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    CheckboxListTile(
+                      value: recordarButton,
+                      title: const Text("Recordarme"),
+                      onChanged: (value) {
+                        setState(() {
+                          recordarButton = value!;
+                          _pref!.setBool("check", value);
+                        });
+                      },
+                    )
                   ],
                 ),
               ),

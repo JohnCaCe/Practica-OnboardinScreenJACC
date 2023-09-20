@@ -6,7 +6,7 @@ class StylesApp {
     return theme.copyWith(
         colorScheme: Theme.of(context)
             .colorScheme
-            .copyWith(primary: const Color.fromARGB(255, 173, 12, 237)));
+            .copyWith(primary: const Color.fromARGB(255, 168, 0, 234)));
   }
 
   static ThemeData darkTheme(BuildContext context) {
@@ -14,6 +14,6 @@ class StylesApp {
     return theme.copyWith(
         colorScheme: Theme.of(context)
             .colorScheme
-            .copyWith(primary: const Color.fromARGB(255, 75, 1, 104)));
+            .copyWith(primary: const Color.fromARGB(255, 59, 10, 79)));
   }
 }
