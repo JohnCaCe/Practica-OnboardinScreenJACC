@@ -9,7 +9,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool? recordarButton = false;
+  TextEditingController txtConUser = TextEditingController();
+  TextEditingController txtConPass = TextEditingController();
+  bool recordarButton = false;
   SharedPreferences? _pref;
 
   @override
@@ -20,21 +22,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   cargarPreferencias() async {
     _pref = await SharedPreferences.getInstance();
+    _pref?.setBool("session", recordarButton);
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController txtConUser = TextEditingController();
-    TextEditingController txtConPass = TextEditingController();
-
-    const txtUser = TextField(
-        //controller: txtConUser,
+    final txtUser = TextFormField(
+        controller: txtConUser,
         decoration: InputDecoration(
-            border: OutlineInputBorder() //PONER BORDES A LAS CAJAS DE TEXTO
-            ));
+          border: OutlineInputBorder(),
+          //PONER BORDES A LAS CAJAS DE TEXTO
+        ));
 
-    const txtPass = TextField(
-        //controller: txtConPass,
+    final txtPass = TextFormField(
+        controller: txtConPass,
         obscureText: true,
         decoration: InputDecoration(
             border: OutlineInputBorder() //PONER BORDES A LAS CAJAS DE TEXTO
@@ -52,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
       icon: const Icon(Icons.login),
       label: const Text('Entrar'),
       onPressed: () {
+        cargarPreferencias();
         Navigator.pushNamed(context, '/dash');
       },
     );
@@ -90,10 +92,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     CheckboxListTile(
                       value: recordarButton,
                       title: const Text("Recordarme"),
-                      onChanged: (value) {
+                      onChanged: (bool? value) {
                         setState(() {
                           recordarButton = value!;
-                          _pref!.setBool("check", value);
+                          cargarPreferencias();
                         });
                       },
                     )

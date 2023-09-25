@@ -2,24 +2,65 @@ import 'package:app1flutter/assets/global_values.dart';
 import 'package:app1flutter/assets/styles_app.dart';
 import 'package:app1flutter/card_school.dart';
 import 'package:app1flutter/routes.dart';
+import 'package:app1flutter/screens/dashboard_screen.dart';
 import 'package:app1flutter/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:concentric_transition/concentric_transition.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+//import 'dart:html';
 
-void main() => runApp(const MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  bool? ischecked = false;
+  MyApp({super.key});
+
+  Future checkTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool("theme") != null && prefs.getBool("theme") != false) {
+      GlobalValues.flagTheme.value = true;
+    } else {
+      GlobalValues.flagTheme.value = false;
+    }
+  }
+
+  Future<bool?> checkSession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool("session") != null && prefs.getBool("session") != false) {
+      ischecked = true;
+      return true;
+    } else {
+      ischecked = false;
+      return false;
+    }
+  }
+
+  saveSession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("session", isChecked);
+  }
 
   @override
   Widget build(BuildContext context) {
+    checkTheme();
+    checkSession();
     return ValueListenableBuilder(
         valueListenable: GlobalValues.flagTheme,
         builder: (context, value, _) {
           return MaterialApp(
               //home: Home(),
-              home: const LoginScreen(),
+              home: FutureBuilder<bool?>(
+                future: checkSession(),
+                builder: (BuildContext context, AsyncSnapshot<bool?> snapshot) {
+                  if (isChecked == false) {
+                    return LoginScreen();
+                  } else {
+                    print(snapshot.data);
+                    return DashboardScreen();
+                  }
+                },
+              ),
               routes: getRoutes(),
               theme: GlobalValues.flagTheme.value
                   ? StylesApp.darkTheme(context)

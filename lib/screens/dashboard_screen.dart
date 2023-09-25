@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:app1flutter/assets/global_values.dart';
 import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+bool isChecked = true;
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -10,6 +15,47 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  @override
+  initState() {
+    checkSession().whenComplete(() async {
+      print(" checked : $isChecked");
+      Timer(Duration(seconds: 2),
+          () => isChecked == true ? isChecked = true : isChecked = false);
+    });
+    super.initState();
+  }
+
+  saveSession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("session", false);
+  }
+
+  Future checkSession() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var obtenerSesion = prefs.getBool("session");
+    setState(() {
+      if (obtenerSesion != true) {
+        isChecked = false;
+      } else {
+        isChecked = true;
+      }
+    });
+  }
+
+  guardarTema() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("theme", GlobalValues.flagTheme.value);
+  }
+
+  Future checkTema() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool("theme") != null && prefs.getBool("theme") != false) {
+      GlobalValues.flagTheme.value = true;
+    } else {
+      GlobalValues.flagTheme.value = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +102,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             isDarkModeEnabled: GlobalValues.flagTheme.value,
             onStateChanged: (isDarkModeEnabled) {
               GlobalValues.flagTheme.value = isDarkModeEnabled;
+              guardarTema();
             },
           ),
         ],
