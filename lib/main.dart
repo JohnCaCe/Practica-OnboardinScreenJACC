@@ -1,12 +1,14 @@
 import 'package:app1flutter/assets/global_values.dart';
 import 'package:app1flutter/assets/styles_app.dart';
 import 'package:app1flutter/card_school.dart';
+import 'package:app1flutter/provider/test_provider.dart';
 import 'package:app1flutter/routes.dart';
 import 'package:app1flutter/screens/dashboard_screen.dart';
 import 'package:app1flutter/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:concentric_transition/concentric_transition.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'dart:html';
 
@@ -48,23 +50,27 @@ class MyApp extends StatelessWidget {
     return ValueListenableBuilder(
         valueListenable: GlobalValues.flagTheme,
         builder: (context, value, _) {
-          return MaterialApp(
-              //home: Home(),
-              home: FutureBuilder<bool?>(
-                future: checkSession(),
-                builder: (BuildContext context, AsyncSnapshot<bool?> snapshot) {
-                  if (isChecked == false) {
-                    return LoginScreen();
-                  } else {
-                    print(snapshot.data);
-                    return DashboardScreen();
-                  }
-                },
-              ),
-              routes: getRoutes(),
-              theme: GlobalValues.flagTheme.value
-                  ? StylesApp.darkTheme(context)
-                  : StylesApp.lightTheme(context));
+          return ChangeNotifierProvider(
+            create: (context) => TestProvider(),
+            child: MaterialApp(
+                //home: Home(),
+                home: FutureBuilder<bool?>(
+                  future: checkSession(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<bool?> snapshot) {
+                    if (isChecked == false) {
+                      return LoginScreen();
+                    } else {
+                      print(snapshot.data);
+                      return DashboardScreen();
+                    }
+                  },
+                ),
+                routes: getRoutes(),
+                theme: GlobalValues.flagTheme.value
+                    ? StylesApp.darkTheme(context)
+                    : StylesApp.lightTheme(context)),
+          );
         });
   }
 }

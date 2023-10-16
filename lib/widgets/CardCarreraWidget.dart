@@ -1,33 +1,31 @@
 import 'package:app1flutter/assets/global_values.dart';
 import 'package:app1flutter/database/agenda_db.dart';
-import 'package:app1flutter/models/task_model.dart';
-import 'package:app1flutter/screens/add_task.dart';
+import 'package:app1flutter/models/carrera_model.dart';
+import 'package:app1flutter/models/carrera_model.dart';
+import 'package:app1flutter/screens/add_carrera.dart';
 import 'package:flutter/material.dart';
 
-class CardTaskWidget extends StatefulWidget {
-  CardTaskWidget({super.key, required this.taskModel, this.agendaDB});
+class CardCarreraWidget extends StatefulWidget {
+  CardCarreraWidget({super.key, required this.carreraModel, this.agendaDB});
 
-  TaskModel taskModel;
+  CarreraModel carreraModel;
   AgendaDB? agendaDB;
 
   @override
-  State<CardTaskWidget> createState() => _CardTaskWidgetState();
+  State<CardCarreraWidget> createState() => _CardCarreraWidgetState();
 }
 
-class _CardTaskWidgetState extends State<CardTaskWidget> {
+class _CardCarreraWidgetState extends State<CardCarreraWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       padding: EdgeInsets.all(5),
-      decoration: BoxDecoration(color: Colors.cyanAccent),
+      decoration: BoxDecoration(color: Color.fromARGB(255, 35, 4, 189)),
       child: Row(
         children: [
           Column(
-            children: [
-              Text(widget.taskModel.nameTask!),
-              Text(widget.taskModel.descTask!)
-            ],
+            children: [Text(widget.carreraModel.nomCarrera!)],
           ),
           Expanded(child: Container()),
           Column(
@@ -37,7 +35,7 @@ class _CardTaskWidgetState extends State<CardTaskWidget> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            AddTask(taskModel: widget.taskModel))),
+                            AddCarrera(carreraModel: widget.carreraModel))),
                 child: Image.asset(
                   'assets/update.png',
                   height: 30,
@@ -54,8 +52,8 @@ class _CardTaskWidgetState extends State<CardTaskWidget> {
                           actions: [
                             TextButton(
                                 onPressed: () {
-                                  widget.agendaDB!.DELETE(
-                                      'tblTareas', widget.taskModel.idTask!);
+                                  widget.agendaDB!.DELETE('tblTareas',
+                                      widget.carreraModel.idCarrera!);
                                   Navigator.pop(context);
 
                                   GlobalValues.flagTask.value =
