@@ -5,6 +5,7 @@ import 'package:app1flutter/provider/test_provider.dart';
 import 'package:app1flutter/routes.dart';
 import 'package:app1flutter/screens/dashboard_screen.dart';
 import 'package:app1flutter/screens/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:concentric_transition/concentric_transition.dart';
 import 'package:lottie/lottie.dart';
@@ -12,7 +13,11 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'dart:html';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   bool? ischecked = false;

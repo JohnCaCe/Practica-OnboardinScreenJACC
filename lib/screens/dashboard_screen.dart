@@ -84,25 +84,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
             subtitle: const Text('Carrousel'),
             onTap: () => Navigator.pushNamed(context, '/popular'),
           ),
-          ListTile(
+          /*ListTile(
             leading: const Icon(Icons.task_alt_outlined),
             trailing: const Icon(Icons.chevron_right),
             title: const Text('Task Manager'),
             onTap: () => Navigator.pushNamed(context, '/task'),
-          ),
+          ),*/
           ListTile(
             leading: const Icon(Icons.message),
             trailing: const Icon(Icons.chevron_right),
             iconColor: Color.fromARGB(255, 175, 246, 43),
             title: const Text('Test Provider'),
             onTap: () => Navigator.pushNamed(context, '/prov'),
-          ),
-          ListTile(
-            leading: const Icon(Icons.task_alt),
-            trailing: const Icon(Icons.chevron_right),
-            iconColor: Color.fromARGB(255, 60, 196, 255),
-            title: const Text('Tareas'),
-            onTap: () => Navigator.pushNamed(context, '/tarea'),
           ),
           ListTile(
             leading: const Icon(Icons.radar),
@@ -117,6 +110,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             iconColor: Color.fromARGB(255, 79, 66, 17),
             title: const Text('Profesores'),
             onTap: () => Navigator.pushNamed(context, '/profe'),
+          ),
+          ListTile(
+            leading: const Icon(Icons.task_alt),
+            trailing: const Icon(Icons.chevron_right),
+            iconColor: Color.fromARGB(255, 60, 196, 255),
+            title: const Text('Tareas'),
+            onTap: () => Navigator.pushNamed(context, '/tarea'),
           ),
           ListTile(
             leading: const Icon(Icons.calendar_view_day),

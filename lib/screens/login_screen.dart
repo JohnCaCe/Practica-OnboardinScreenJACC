@@ -1,3 +1,4 @@
+import 'package:app1flutter/firebase/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,6 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  //final emailAuth = ;
   TextEditingController txtConUser = TextEditingController();
   TextEditingController txtConPass = TextEditingController();
   bool recordarButton = false;
@@ -29,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final txtUser = TextFormField(
         controller: txtConUser,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: OutlineInputBorder(),
           //PONER BORDES A LAS CAJAS DE TEXTO
         ));
@@ -37,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final txtPass = TextFormField(
         controller: txtConPass,
         obscureText: true,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             border: OutlineInputBorder() //PONER BORDES A LAS CAJAS DE TEXTO
             ));
 
@@ -53,6 +55,10 @@ class _LoginScreenState extends State<LoginScreen> {
       icon: const Icon(Icons.login),
       label: const Text('Entrar'),
       onPressed: () {
+        /*bool res = await emailAuth.validateUser(emailUser: textConUser.text, pwdUser: textConPass);
+        if (res) {
+          
+        }*/
         cargarPreferencias();
         Navigator.pushNamed(context, '/dash');
       },
@@ -72,6 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
+              TextButton(
+                  onPressed: () => Navigator.pushNamed(context, '/register'),
+                  child: const Text(
+                    "Registrarse =)",
+                    style: TextStyle(fontSize: 20),
+                  )),
               Container(
                 height: 249,
                 padding: const EdgeInsets.all(30),

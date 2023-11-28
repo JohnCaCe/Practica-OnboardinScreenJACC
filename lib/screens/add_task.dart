@@ -1,6 +1,7 @@
 import 'package:app1flutter/assets/global_values.dart';
 import 'package:app1flutter/database/agenda_db.dart';
 import 'package:app1flutter/models/task_model.dart';
+import 'package:app1flutter/models/tasks_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

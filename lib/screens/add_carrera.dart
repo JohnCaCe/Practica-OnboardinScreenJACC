@@ -1,7 +1,7 @@
 import 'package:app1flutter/assets/global_values.dart';
 import 'package:app1flutter/database/agenda_db.dart';
 import 'package:app1flutter/models/carrera_model.dart';
-import 'package:flutter/foundation.dart';
+import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:flutter/material.dart';
 
 class AddCarrera extends StatefulWidget {
@@ -20,6 +20,9 @@ class _AddCarreraState extends State<AddCarrera> {
   void initState() {
     super.initState();
     agendaDB = AgendaDB();
+    if (widget.carreraModel != null) {
+      txtConCarrera.text = widget.carreraModel!.nomCarrera!;
+    }
   }
 
   @override
@@ -32,17 +35,27 @@ class _AddCarreraState extends State<AddCarrera> {
     final ElevatedButton btnGuardar = ElevatedButton(
         onPressed: () {
           if (widget.carreraModel == null) {
-            agendaDB!.INSERT('tblCarrera', {
-              'nomCarrera': txtConCarrera.text,
-            }).then((value) {
-              var msj =
-                  (value > 0) ? 'La inserción fue exitosa' : 'Ocurrio un error';
-              var snackbar = SnackBar(content: Text(msj));
-              ScaffoldMessenger.of(context).showSnackBar(snackbar);
-              Navigator.pop(context);
-            });
+            if (txtConCarrera.text == "") {
+              ArtSweetAlert.show(
+                  context: context,
+                  artDialogArgs: ArtDialogArgs(
+                      type: ArtSweetAlertType.warning,
+                      title: "Accion Invalida!",
+                      text:
+                          "Complete los campos vacios para poder realizar la accion"));
+            } else {
+              agendaDB!.INSERT('tblCarrera', {
+                'nomCarrera': txtConCarrera.text,
+              }).then((value) {
+                var msj = (value > 0)
+                    ? 'La inserción fue exitosa'
+                    : 'Ocurrio un error';
+                var snackbar = SnackBar(content: Text(msj));
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                Navigator.pop(context);
+              });
+            }
           } else {
-            GlobalValues.flagTask.value = !GlobalValues.flagTask.value;
             agendaDB!.UPDATE_CARRERA('tblCarrera', {
               'idCarrera': widget.carreraModel!.idCarrera,
               'nomCarrera': txtConCarrera.text,
@@ -55,10 +68,14 @@ class _AddCarreraState extends State<AddCarrera> {
               Navigator.pop(context);
             });
           }
+          GlobalValues.flagCarrera.value = !GlobalValues.flagCarrera.value;
         },
-        child: const Text("Agregar Carrera"));
+        child: const Text("Guardar"));
     return Scaffold(
-      appBar: AppBar(title: Text('Agregar Carrera')),
+      appBar: AppBar(
+          title: widget.carreraModel == null
+              ? Text('Agregar Carrera')
+              : Text('Actualizar Carrera')),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(

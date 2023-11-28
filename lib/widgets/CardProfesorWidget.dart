@@ -1,17 +1,16 @@
 import 'package:app1flutter/assets/global_values.dart';
 import 'package:app1flutter/database/agenda_db.dart';
+import 'package:app1flutter/models/carrera_model.dart';
 import 'package:app1flutter/models/profesor_model.dart';
-import 'package:app1flutter/models/task_model.dart';
-import 'package:app1flutter/models/task_model.dart';
-import 'package:app1flutter/screens/add_tarea.dart';
+import 'package:app1flutter/screens/add_profesor.dart';
 import 'package:app1flutter/screens/add_task.dart';
 import 'package:flutter/material.dart';
 
-Widget tareaWidget(TareaModel tarea, BuildContext context) {
-  AgendaDB? agendaDB = AgendaDB();
+Widget profesorWidget(ProfesorModel profesor, BuildContext context) {
+  AgendaDB agendaDB = AgendaDB();
   return FutureBuilder(
-      future: agendaDB.GETNOMPROFEBYID(tarea.idProfe!),
-      builder: (BuildContext context, AsyncSnapshot<ProfesorModel> snapshot) {
+      future: agendaDB.GETNOMCARRBYID(profesor.idCarrera!),
+      builder: (BuildContext context, AsyncSnapshot<CarreraModel> snapshot) {
         if (snapshot.hasData) {
           return Container(
             margin: EdgeInsets.only(top: 10),
@@ -21,15 +20,11 @@ Widget tareaWidget(TareaModel tarea, BuildContext context) {
               children: [
                 Column(
                   children: [
-                    Text(tarea.nomTarea!),
-                    const SizedBox(
-                      height: 7,
-                    ),
-                    Text(tarea.desTarea!),
-                    const SizedBox(
-                      height: 7,
-                    ),
-                    Text(snapshot.data!.nomProfe!)
+                    Text(profesor.nomProfe!),
+                    Text(snapshot.data!.nomCarrera!,
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(fontSize: 12)),
+                    Text(profesor.email!)
                   ],
                 ),
                 Expanded(child: Container()),
@@ -40,7 +35,7 @@ Widget tareaWidget(TareaModel tarea, BuildContext context) {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  AddTarea(tareaModel: tarea))),
+                                  AddProfesor(profesorModel: profesor))),
                       child: Image.asset(
                         'assets/update.png',
                         height: 30,
@@ -57,12 +52,12 @@ Widget tareaWidget(TareaModel tarea, BuildContext context) {
                                 actions: [
                                   TextButton(
                                       onPressed: () {
-                                        agendaDB!.DELETE_TAREA(
-                                            'tblTarea', tarea.idTarea!);
+                                        agendaDB!.DELETE_PROFESOR(
+                                            'tblProfesor', profesor.idProfe!);
                                         Navigator.pop(context);
 
-                                        GlobalValues.flagTarea.value =
-                                            !GlobalValues.flagTarea.value;
+                                        GlobalValues.flagTask.value =
+                                            !GlobalValues.flagTask.value;
                                       },
                                       child: Text('Si')),
                                   TextButton(
@@ -86,12 +81,11 @@ Widget tareaWidget(TareaModel tarea, BuildContext context) {
         } else {
           if (snapshot.hasError) {
             return const Center(
-              child: Text("Algo salio mal"),
+              child: Text("Something Was Wrong"),
             );
           } else {
             return const CircularProgressIndicator();
           }
         }
       });
-  /**/
 }

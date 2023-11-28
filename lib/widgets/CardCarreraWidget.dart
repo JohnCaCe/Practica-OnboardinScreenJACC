@@ -25,7 +25,9 @@ class _CardCarreraWidgetState extends State<CardCarreraWidget> {
       child: Row(
         children: [
           Column(
-            children: [Text(widget.carreraModel.nomCarrera!)],
+            children: [
+              Text(widget.carreraModel.nomCarrera!),
+            ],
           ),
           Expanded(child: Container()),
           Column(
@@ -52,12 +54,12 @@ class _CardCarreraWidgetState extends State<CardCarreraWidget> {
                           actions: [
                             TextButton(
                                 onPressed: () {
-                                  widget.agendaDB!.DELETE('tblTareas',
+                                  widget.agendaDB!.DELETE_CARRERA('tblCarrera',
                                       widget.carreraModel.idCarrera!);
                                   Navigator.pop(context);
 
-                                  GlobalValues.flagTask.value =
-                                      !GlobalValues.flagTask.value;
+                                  GlobalValues.flagCarrera.value =
+                                      !GlobalValues.flagCarrera.value;
                                 },
                                 child: Text('Si')),
                             TextButton(

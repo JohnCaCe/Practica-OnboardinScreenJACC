@@ -22,46 +22,6 @@ class _TaskScreenState extends State<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Task Manager'),
-        actions: [
-          IconButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, '/add').then((value) {
-                    setState(() {});
-                  }),
-              icon: const Icon(Icons.task))
-        ],
-      ),
-      body: ValueListenableBuilder(
-          valueListenable: GlobalValues.flagTask,
-          builder: (context, value, _) {
-            return FutureBuilder(
-              future: agendaDB!.GETALLTASK(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<TaskModel>> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CardTaskWidget(
-                          taskModel: snapshot.data![index],
-                          agendaDB: agendaDB,
-                        );
-                      });
-                } else {
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: Text('Somenthing Went Wrong'),
-                    );
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                }
-              },
-            );
-          }),
-    );
+    return Scaffold();
   }
 }
